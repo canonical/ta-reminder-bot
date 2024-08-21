@@ -1,0 +1,38 @@
+name: Send pulse reminders for technical authors
+on:
+    schedule:
+        - cron: "42 8 * * 1,5"
+
+jobs:
+    send-reminder:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Send pulse reminders for technical authors
+              env:
+                WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
+              run: |
+                WEEK_NUM=`date +"%V"`
+                WEEK_DAY_NUM=`date +"%u"`
+                
+                function send_mattermost_msg() {
+                  msg="$1"
+                  curl -i -X POST \
+                    -H 'Content-Type:application/json' \
+                    -d "{\"text\": \"$msg\"}" \
+                    "$WEBHOOK_URL"                
+                }
+                
+                if [ $(($WEEK_NUM % 2)) -eq 1 ];  # First week of the pulse
+                then
+                  if [ $(($WEEK_DAY_NUM)) -eq 1 ];  # Monday
+                  then
+                    msg="@here New pulse starts, do you have documentation practice work scheduled for this pulse? Remember to prioritise work that are part of the cycle roadmap."
+                    send_mattermost_msg "$msg"
+                  fi
+                else  # Second week of the pulse
+                  if [ $(($WEEK_DAY_NUM)) -eq 5 ];  # Friday
+                  then
+                    msg="@here Prepare for pulse closure:\n- Update the status for your Jira cards\n- Schedule work for next pulse. Remember to prioritise work that are part of the cycle roadmap."
+                    send_mattermost_msg "$msg"
+                  fi
+                fi
