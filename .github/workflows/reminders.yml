@@ -22,7 +22,7 @@ jobs:
                     "$WEBHOOK_URL"
                 }
 
-                if [ $(($WEEK_NUM % 2)) -eq 0 ];  # Second week of the pulse
+                if [ $(($WEEK_NUM % 2)) -eq 1 ];  # Second week of the pulse
                 then
                   if [ $(($WEEK_DAY_NUM)) -eq 5 ];  # Friday
                   then
