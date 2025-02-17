@@ -11,7 +11,7 @@ jobs:
               env:
                 WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
               run: |
-                WEEK_NUM=`date +"%V"`
+                WEEK_NUM=`date +"%-V"`
                 WEEK_DAY_NUM=`date +"%u"`
 
                 function send_mattermost_msg() {
