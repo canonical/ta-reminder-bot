@@ -30,3 +30,4 @@ jobs:
                     send_mattermost_msg "$msg"
                   fi
                 fi
+#Enable workflow run
