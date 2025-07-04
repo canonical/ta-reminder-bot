@@ -1,7 +1,7 @@
 name: Send pulse reminders for technical authors
 on:
     schedule:
-        - cron: "10 10 * * 4-5"
+        - cron: "18 10 * * 4-5"
 
 jobs:
     send-reminder:
@@ -24,7 +24,7 @@ jobs:
 
                 if [ $(($WEEK_NUM % 2)) -eq 1 ];  # Second week of the pulse. The first pulse of 2025 started in an even week.
                 then
-                  if [ $(($WEEK_DAY_NUM)) -eq 5 ];  # Friday
+                  if [ $(($WEEK_DAY_NUM)) -eq 4 ];  # Friday
                   then
                     msg="@here A reminder that the current pulse ends today\n- Update the status for your Jira cards\n- Schedule work for next pulse. Remember to prioritise work that is part of the cycle roadmap."
                     send_mattermost_msg "$msg"
