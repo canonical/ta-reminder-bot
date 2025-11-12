@@ -1,4 +1,4 @@
-name: Send pulse reminders for technical authors
+name: Send reminders for technical authors
 on:
     schedule:
         - cron: "18 10 * * 4-5"
