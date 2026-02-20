@@ -1,0 +1,25 @@
+name: Send Knowbot URL Reminders
+on:
+    schedule:
+        # Runs at 09:00 UTC on the 15th of January, April, July, and October
+        - cron: "0 9 15 1,4,7,10 *"
+
+jobs:
+    send-reminder:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Send Knowbot update reminder
+              env:
+                WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
+              run: |
+                function send_mattermost_msg() {
+                  msg="$1"
+                  curl -i -X POST \
+                    -H 'Content-Type:application/json' \
+                    -d "{\"text\": \"$msg\"}" \
+                    "$WEBHOOK_URL"
+                }
+
+                msg="@here Friendly reminder to update the URLs of the documentation sets you own in the [Product Docs for Knowbot spreadsheet](https://docs.google.com/spreadsheets/d/1oaDTPceP828hwBU3bgPB5pkPAJztqrWgNfU7AThGioY/edit?gid=0#gid=0) :)\n When you update any information, please add a comment tagging @sefeijoo and @lidia-luna so we are aware of the changes needed for the Knowbot backend. If there are new documentation pages that are not listed in the table, create a new row, include all mandatory information, and tag us in a comment as well. Thank you!"
+                
+                send_mattermost_msg "$msg"
